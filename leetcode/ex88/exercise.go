@@ -14,7 +14,7 @@ func merge(nums1 []int, m int, nums2 []int, n int)  {
             break
         }
         
-        // t2が空でなければ問答無用で t1 を優先
+        // t2が空だったら問答無用で t1 を優先
         if len(t2) == 0 || t1[0] < t2[0] {
             nums1[i] = t1[0]
             t1 = t1[1:]
