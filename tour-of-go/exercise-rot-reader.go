@@ -15,10 +15,10 @@ func (reader *rot13Reader) Read(b []byte) (n int, e error) {
 	if e == nil {           // errorがなかったら処理してく
 		for i, v := range b {
 			switch {
-			case v >= 'A' && v <= 'Z': // 13個シフト（ROT13だから）
-				b[i] = (v-'A'+13)%26 + 'A' // bの中身を書き換えていく
-			case v >= 'a' && v <= 'z':
-				b[i] = (v-'a'+13)%26 + 'a'
+			case v >= 'A' && v <= 'Z': // 大文字アルファベット
+				b[i] = (v-'A'+13)%26 + 'A' // 13シフトしてアルファベット数の余剰。bの中身を書き換えていく
+			case v >= 'a' && v <= 'z': // 小文字アルファベット
+				b[i] = (v-'a'+13)%26 + 'a' // 13シフトしてアルファベット数の余剰。
 			}
 		}
 	}
