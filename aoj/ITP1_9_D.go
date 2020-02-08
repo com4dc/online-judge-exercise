@@ -27,26 +27,25 @@ func main() {
 			{
 				s_idx, _ := strconv.Atoi(m[1])
 				e_idx, _ := strconv.Atoi(m[2])
-				fmt.Println(str[s_idx:e_idx])
+				fmt.Println(str[s_idx : e_idx+1])
 			}
 		case "replace":
 			{
 				s_idx, _ := strconv.Atoi(m[1])
 				e_idx, _ := strconv.Atoi(m[2])
-				str = str[:s_idx] + m[3] + str[e_idx:]
+				str = str[:s_idx] + m[3] + str[e_idx+1:]
 			}
 		case "reverse":
 			{
 				s_idx, _ := strconv.Atoi(m[1])
 				e_idx, _ := strconv.Atoi(m[2])
-				tmp := str[s_idx:e_idx]
+				tmp := []rune(str[s_idx : e_idx+1])
 
 				tt := ""
 				for j := len(tmp) - 1; j >= 0; j-- {
 					tt = tt + string(tmp[j])
 				}
-
-				str = str[:s_idx] + tt + str[e_idx:]
+				str = str[:s_idx] + tt + str[e_idx+1:]
 			}
 		default:
 		}
