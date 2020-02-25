@@ -65,6 +65,7 @@ func (d *Dice) opW() *Dice {
 	d.four = tmp
 	return d
 }
+
 func main() {
 
 	dice_s := strings.Split(nextLine(), " ")
