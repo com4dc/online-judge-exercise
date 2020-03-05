@@ -1,5 +1,11 @@
 package main
 
+// Dynamic Programming //
+// minv = R[0]
+// for j が 1 から n-1 まで
+//   maxv = (maxv と R[j]-minv のうち大きい方)
+//   minv = (minv と R[j] のうち小さい方)
+
 import (
 	"bufio"
 	"fmt"
@@ -19,33 +25,21 @@ func nextLine() string {
 func main() {
 	count, _ := strconv.Atoi(nextLine())
 
-	seq := make([]int, 0)
+	n0, _ := strconv.Atoi(nextLine())
+	minv := n0
+	maxv := math.MinInt32
 
-	for i := 0; i < count; i++ {
+	for i := 1; i < count; i++ {
 		n, _ := strconv.Atoi(nextLine())
-		seq = append(seq, n)
-	}
 
-	max := math.MinInt32
+		if maxv < n-minv {
+			maxv = n - minv
+		}
 
-	for idx, v := range seq {
-		t := findMax(seq[idx+1:])
-		r := t - v
-
-		if max < r {
-			max = r
+		if minv > n {
+			minv = n
 		}
 	}
 
-	fmt.Println(max)
-}
-
-func findMax(s []int) int {
-	max := math.MinInt32
-	for _, target := range s {
-		if max < target {
-			max = target
-		}
-	}
-	return max
+	fmt.Println(maxv)
 }
