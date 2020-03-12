@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"reflect"
 	"strconv"
 	"strings"
 )
@@ -28,19 +29,64 @@ func main() {
 		C = append(C, c)
 	}
 
-	C, _ = bubbleSort(C, N)
+	sort_b := make([]Card, len(C))
+	copy(sort_b, C)
+	sort_b, _ = bubbleSort(sort_b, N)
 
-	result := make([]string, len(C))
-	for idx, s := range C {
-		result[idx] = s.sign
+	sort_s := make([]Card, len(C))
+	copy(sort_s, C)
+	sort_s, _ = selectionSort(sort_s, N)
+
+	m_origin := same_value(C)
+	b_origin := signed_order(sort_b)
+
+	stable := true
+	for k, v := range b_origin {
+		s := m_origin[k]
+		// fmt.Printf("s=%s, v=%s\n", strings.Join(s, " "), strings.Join(v, " "))
+		if !reflect.DeepEqual(s, v) {
+			stable = false
+			break
+		}
 	}
 
-	fmt.Println(strings.Join(result, " "))
+	fmt.Println(stringify(sort_b))
+	if stable {
+		fmt.Println("Stable")
+	} else {
+		fmt.Println("Not stable")
+	}
+
+	s_origin := signed_order(sort_s)
+	stable = true
+	for k, v := range s_origin {
+		s := m_origin[k]
+		// fmt.Printf("s=%s, v=%s\n", strings.Join(s, " "), strings.Join(v, " "))
+		if !reflect.DeepEqual(s, v) {
+			stable = false
+			break
+		}
+	}
+
+	fmt.Println(stringify(sort_s))
+	if stable {
+		fmt.Println("Stable")
+	} else {
+		fmt.Println("Not stable")
+	}
 }
 
 type Card struct {
 	sign  string
 	value int
+}
+
+func stringify(C []Card) string {
+	r := make([]string, len(C))
+	for i, v := range C {
+		r[i] = v.sign
+	}
+	return strings.Join(r, " ")
 }
 
 func bubbleSort(C []Card, N int) ([]Card, int) {
@@ -86,6 +132,28 @@ func selectionSort(C []Card, N int) ([]Card, int) {
 	return C, count
 }
 
-func stable?(C []Card) {
+func signed_order(C []Card) map[int][]string {
 
+	m := make(map[int][]string, 0)
+
+	prev := C[0]
+	for i := 1; i < len(C); i++ {
+		if prev.value == C[i].value {
+			if len(m[C[i].value]) == 0 {
+				m[C[i].value] = append(m[C[i].value], prev.sign)
+			}
+			m[C[i].value] = append(m[C[i].value], C[i].sign)
+		}
+		prev = C[i]
+	}
+	return m
+}
+
+func same_value(C []Card) map[int][]string {
+	m := map[int][]string{}
+
+	for _, v := range C {
+		m[v.value] = append(m[v.value], v.sign)
+	}
+	return m
 }
